@@ -35,11 +35,4 @@ async function create(name) {
 
 create('Chair');
 
-// try { 
-//     await writeFile('test.apex', 'data'); 
-//     console.log(`Wrote data to test.apex`); 
-// } catch (error) { 
-//     console.error(`Got an error trying to write the file: ${error.message}`);
-// }
-
 // process.exit(1);
