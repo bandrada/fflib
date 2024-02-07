@@ -1,0 +1,13 @@
+{
+  "name": "fflib",
+  "version": "1.0.0",
+  "description": "a cli to create standard apex files for a project using the salesforce fflib framework",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": "./index.js"
+}
