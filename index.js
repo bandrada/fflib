@@ -1,29 +1,31 @@
 #!/user/bin/env node
 
 import { writeFile, mkdir, access } from 'fs/promises';
+import { getApex } from './apex.js';
 
 async function create(name) { 
     try {
-        const path = '/bin/test/something/';
-        if (!access('/bin')) {
+        const path = './bin/test/something/';
+        try {
+            await access('./bin');
+        } catch (error) {
             await mkdir('./bin');
-            console.log('1');
         }
-        if (!access('/bin/test')) {
-            await mkdir('/bin/test');
-            console.log('2');
-        }
-        if (!access('/bin/test/something')) {
-            await mkdir('/bin/test/something');
-            console.log('3');
-        }
-        const fileName = `${path}${name}.apex`;
-        const data = 
-`public class ${name} {
-    public void ${name}() {
 
-    }
-}`;
+        try {
+            await access('./bin/test');
+        } catch (error) {
+            await mkdir('./bin/test');
+        }
+
+        try {
+            await access('./bin/test/something');
+        } catch (error) {
+            await mkdir('./bin/test/something');
+        }
+
+        const fileName = `${path}${name}.apex`;
+        const data = getApex(name);
         await writeFile(fileName, data);
         console.log(`Wrote data to ${fileName}`);
     } catch (error) {
