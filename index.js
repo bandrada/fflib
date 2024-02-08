@@ -1,8 +1,8 @@
 #!/user/bin/env node
 
-import { writeFile, mkdir, access } from 'fs/promises';
+import { mkdir, access } from 'fs/promises';
 import { Command } from 'commander';
-import { getApex } from './apex.js';
+import { createFiles } from './filegen.js';
 
 async function create(name) { 
     try {
@@ -25,10 +25,7 @@ async function create(name) {
             await mkdir('./bin/test/something');
         }
 
-        const fileName = `${path}${name}.apex`;
-        const data = getApex(name);
-        await writeFile(fileName, data);
-        console.log(`Wrote data to ${fileName}`);
+        await createFiles(name, path);
     } catch (error) {
         console.error(`Got an error trying to write the file: ${error.message}`);
     }
@@ -47,9 +44,9 @@ program.command('create')
     .action((str, options) => {
         // console.log(options); -> {m: true}
         create(str);
-});
+    }
+);
 
 program.parse();
-// create('Chair');
 
 // process.exit(1);
