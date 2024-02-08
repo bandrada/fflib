@@ -1,52 +1,48 @@
 #!/user/bin/env node
 
 import { mkdir, access } from 'fs/promises';
-import { Command } from 'commander';
 import { createFiles } from './filegen.js';
 
-async function create(name) { 
+async function create(name, plural) { 
     try {
-        const path = './bin/test/something/';
-        try {
-            await access('./bin');
-        } catch (error) {
-            await mkdir('./bin');
-        }
-
-        try {
-            await access('./bin/test');
-        } catch (error) {
-            await mkdir('./bin/test');
-        }
-
-        try {
-            await access('./bin/test/something');
-        } catch (error) {
-            await mkdir('./bin/test/something');
-        }
-
-        await createFiles(name, path);
+        const path = './force-app/main/default/classes/';
+        // await mkdir('./force-app');
+        // await mkdir('./force-app/main');
+        // await mkdir('./force-app/main/default');
+        // await mkdir('./force-app/main/default/classes');
+        await createFiles(name, path, plural);
     } catch (error) {
         console.error(`Got an error trying to write the file: ${error.message}`);
     }
 }
 
-const program = new Command();
-program
-    .name('fflib')
-    .description('a cli to create standard apex files for a project using the salesforce fflib framework')
-    .version('1.0.0');
+// console.log(process.argv); // -> [args] 0 and 1 are paths and can be ignored atm
 
-program.command('create')
-    .description('Create the apex files needed to get started with Selector and Domain classes')
-    .argument('<string>', 'string that is the name of the SObject you want to create files for')
-    .option('-m', 'use org meta data to fill standard values (NOT YET IMPLEMENTED)')
-    .action((str, options) => {
-        // console.log(options); -> {m: true}
-        create(str);
+const args = process.argv.slice(2);
+console.log(args);
+if (args.length === 0) {
+    console.error('please enter a name for file generation')
+} else if (args[0].startsWith('-')) {
+    console.error('please enter name of file first');
+} else {
+    try {
+        let plural;
+        if (args.length === 3) {
+            if (args[1] === '-p' || args[1] === '-P') {
+                plural = args[2];
+            } else {
+                console.error('did not have -p');
+                process.exit(1);
+            }
+        } else {
+            console.log('did not have 3 args');
+        }
+        create(args[0], plural);
+    } catch (error) {
+        console.error(error);
+        console.trace();
     }
-);
+}
 
-program.parse();
 
 // process.exit(1);
