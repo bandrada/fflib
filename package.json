@@ -1,6 +1,6 @@
 {
   "name": "fflib",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "a cli to create standard apex files for a project using the salesforce fflib framework",
   "main": "index.js",
   "type": "module",
@@ -9,8 +9,5 @@
   },
   "author": "",
   "license": "ISC",
-  "bin": "./index.js",
-  "dependencies": {
-    "commander": "^12.0.0"
-  }
+  "bin": "./index.js"
 }
