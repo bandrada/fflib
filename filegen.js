@@ -1,24 +1,24 @@
 import { writeFile } from 'fs/promises';
 
-export function createFiles(name, path, ending = 's') {
+export function createFiles(name, path, plural = name + 's') {
     Promise.all([
-        writeFile(path + name + ending + '.cls', domainContent(name, ending)),
-        writeFile(path + name + ending + '.cls-meta.xml', xmlContent()),
+        writeFile(path + plural + '.cls', domainContent(name, plural)),
+        writeFile(path + plural + '.cls-meta.xml', xmlContent()),
         writeFile(path + name + 'Selector.cls', selectorContent(name)),
-        writeFile(path + name + 'Selector.cls-meta.xml', xmlContent())
+        writeFile(path + name + 'Selector.cls-meta.xml', xmlContent()),
     ]);
 }
 
-function domainContent(name, ending) {
+function domainContent(name, plural) {
     const data =
-`public with sharing class ${name}${ending} extends fflib_SObjectDomain {
-    public ${name}${ending}(List<${name}> sObjects) {
+`public with sharing class ${plural} extends fflib_SObjectDomain {
+    public ${plural}(List<${name}> sObjects) {
         super(sObjects);
     }
     
     public class Constructor implements fflib_SObjectDomain.IConstructable {
         public fflib_SObjectDomain construct(List<SObject> sObjects) { 
-            return new ${name}${ending}(sObjects);
+            return new ${plural}(sObjects);
         }        
     }
 }`;
